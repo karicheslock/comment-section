@@ -19,4 +19,4 @@ function CommentForm({handleSubmit, submitLabel, hasCancelButton = false, initia
   )
 }
 
-export default CommentForm
+export default CommentForm;

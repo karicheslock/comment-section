@@ -1,5 +1,7 @@
 import {useEffect, useState} from 'react';
-import {getComments, createComment, deleteComment as deleteCommentApi, updateComment as updateCommentApi} from '../api';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase-config';
+import {createComment, deleteComment as deleteCommentApi, updateComment as updateCommentApi} from '../api';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
 
@@ -7,15 +9,25 @@ function Comments({currentUserId}) {
     const [backendComments, setBackendComments] = useState([]);
     const [activeComment, setActiveComment] = useState(null);
     const rootComments = backendComments.filter((backendComment) => backendComment.parentId === null);
+    const isAuth = localStorage.getItem('isAuth');
+
     const getReplies = commentId => {
         return backendComments.filter(backendComment => backendComment.parentId === commentId).sort((a,b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
     };
+
     const addComment = (text, parentId) => {
         createComment(text, parentId).then(comment => {
             setBackendComments([comment, ...backendComments]);
             setActiveComment(null);
         })
     }
+
+    /* const addComment = (text) => {
+        createComment(text).then(comment => {
+            setBackendComments([comment, ...backendComments]);
+            setActiveComment(null);
+        })
+    } */
 
     const deleteComment = (commentId) => {
         if (window.confirm('Are you sure you want to delete comment?')) {
@@ -39,23 +51,39 @@ function Comments({currentUserId}) {
         })
     }
 
-    useEffect(() => {
+    /* useEffect(() => {
         getComments().then(data => {
             setBackendComments(data);
         })
-    }, [])
+    }, []) */
+
+    
+    useEffect(() => {
+        const getComments = async () => {
+            const commentsCollectionRef = collection(db, "comments");
+            const data = await getDocs(commentsCollectionRef);
+            setBackendComments(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
+        }
+
+        getComments();
+    }, [commentsCollectionRef]);
+
   return (
     <div className='comments'>
         <h3 className='comments-title'>Comments</h3>
-        <div className='comment-form-title'>Write comment</div>
-        <CommentForm submitLabel="Write" handleSubmit={addComment} />
+        {isAuth && <>
+            <div className='comment-form-title'>Write comment</div>
+            <CommentForm submitLabel="Write" handleSubmit={addComment} />
+        </>
+        }
         <div className='comments-container'>
             {rootComments.map((rootComment) => (
                 <Comment 
                     key={rootComment.id} 
                     comment={rootComment} 
                     replies={getReplies(rootComment.id)} 
-                    currentUserId={currentUserId} deleteComment={deleteComment} 
+                    currentUserId={currentUserId} 
+                    deleteComment={deleteComment} 
                     activeComment={activeComment} 
                     setActiveComment={setActiveComment}
                     addComment={addComment}

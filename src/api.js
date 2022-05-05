@@ -1,4 +1,7 @@
-export const getComments = async () => {
+import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore';
+import { db, auth } from './firebase-config';
+
+/* export const getComments = async () => {
     return [
       {
         id: "1",
@@ -33,9 +36,26 @@ export const getComments = async () => {
         createdAt: "2021-08-16T23:00:33.010+02:00",
       },
     ];
-  };
+  }; */
+
+const commentsCollectionRef = collection(db, "comments");
+
+export const createComment = async (text, parentId = null) => {
+  try {
+    await addDoc(commentsCollectionRef, {
+      id: Math.random().toString(36).substring(2,9),
+      body: text,
+      parentId,
+      userId: auth.currentUser.uid,
+      username: auth.currentUser.displayName,
+      createdAt: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
   
-  export const createComment = async (text, parentId = null) => {
+ /*  export const createComment = async (text, parentId = null) => {
     return {
       id: Math.random().toString(36).substr(2, 9),
       body: text,
@@ -44,12 +64,13 @@ export const getComments = async () => {
       username: "John",
       createdAt: new Date().toISOString(),
     };
-  };
+  }; */
   
   export const updateComment = async (text) => {
     return { text };
   };
   
-  export const deleteComment = async () => {
-    return {};
+  export const deleteComment = async (id) => {
+    const commentDoc = doc(db, "comments", id);
+    await deleteDoc(commentDoc);
   };
