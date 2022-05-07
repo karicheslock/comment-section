@@ -1,46 +1,12 @@
-import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db, auth } from './firebase-config';
 
-/* export const getComments = async () => {
-    return [
-      {
-        id: "1",
-        body: "First comment",
-        username: "Jack",
-        userId: "1",
-        parentId: null,
-        createdAt: "2021-08-16T23:00:33.010+02:00",
-      },
-      {
-        id: "2",
-        body: "Second comment",
-        username: "John",
-        userId: "2",
-        parentId: null,
-        createdAt: "2021-08-16T23:00:33.010+02:00",
-      },
-      {
-        id: "3",
-        body: "First comment first child",
-        username: "John",
-        userId: "2",
-        parentId: "1",
-        createdAt: "2021-08-16T23:00:33.010+02:00",
-      },
-      {
-        id: "4",
-        body: "Second comment second child",
-        username: "John",
-        userId: "2",
-        parentId: "2",
-        createdAt: "2021-08-16T23:00:33.010+02:00",
-      },
-    ];
-  }; */
 
-const commentsCollectionRef = collection(db, "comments");
 
 export const createComment = async (text, parentId = null) => {
+  
+  const commentsCollectionRef = collection(db, "comments");
+
   try {
     await addDoc(commentsCollectionRef, {
       id: Math.random().toString(36).substring(2,9),
@@ -48,6 +14,7 @@ export const createComment = async (text, parentId = null) => {
       parentId,
       userId: auth.currentUser.uid,
       username: auth.currentUser.displayName,
+      userImg: auth.currentUser.photoURL,
       createdAt: new Date().toISOString(),
     });
   } catch (error) {
@@ -55,19 +22,11 @@ export const createComment = async (text, parentId = null) => {
   }
 };
   
- /*  export const createComment = async (text, parentId = null) => {
-    return {
-      id: Math.random().toString(36).substr(2, 9),
-      body: text,
-      parentId,
-      userId: "1",
-      username: "John",
-      createdAt: new Date().toISOString(),
-    };
-  }; */
-  
-  export const updateComment = async (text) => {
-    return { text };
+  export const updateComment = async (text, id) => {
+    const commentRef = doc(db, "comments", id);
+    await updateDoc(commentRef, {
+      body: text
+    })
   };
   
   export const deleteComment = async (id) => {

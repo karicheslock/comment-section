@@ -22,12 +22,6 @@ function Comments({currentUserId}) {
         })
     }
 
-    /* const addComment = (text) => {
-        createComment(text).then(comment => {
-            setBackendComments([comment, ...backendComments]);
-            setActiveComment(null);
-        })
-    } */
 
     const deleteComment = (commentId) => {
         if (window.confirm('Are you sure you want to delete comment?')) {
@@ -51,16 +45,11 @@ function Comments({currentUserId}) {
         })
     }
 
-    /* useEffect(() => {
-        getComments().then(data => {
-            setBackendComments(data);
-        })
-    }, []) */
-
-    
+    let commentsCollectionRef;
     useEffect(() => {
+        const commentsCollectionRef = collection(db, "comments");
         const getComments = async () => {
-            const commentsCollectionRef = collection(db, "comments");
+            
             const data = await getDocs(commentsCollectionRef);
             setBackendComments(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
         }

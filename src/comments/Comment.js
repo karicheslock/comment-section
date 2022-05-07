@@ -8,10 +8,12 @@ function Comment({comment, replies, currentUserId, deleteComment, activeComment,
   const isReplying = activeComment && activeComment.type === 'replying' && activeComment.id === comment.id;
   const isEditing = activeComment && activeComment.type === 'editing' && activeComment.id === comment.id;
   const replyId = parentId ? parentId : comment.id;
+
+
   return (
     <div className="comment">
         <div className="comment-image-container">
-            <img src="./images/user-icon.png" alt="Uesr avatar" />
+            <img src={comment.userImg} alt="User avatar" />
         </div>
         <div className="comment-right-part">
           <div className="comment-content">
@@ -35,7 +37,8 @@ function Comment({comment, replies, currentUserId, deleteComment, activeComment,
               {replies.map(reply => (
                 <Comment 
                   comment={reply} 
-                  key={reply.id} replies={[]} 
+                  key={reply.id} 
+                  replies={[]} 
                   currentUserId={currentUserId} 
                   deleteComment={deleteComment} 
                   parentId={comment.id} 

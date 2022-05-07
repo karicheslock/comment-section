@@ -20,13 +20,13 @@ function App() {
     });
   };
 
-
+console.log(auth.currentUser);
   return (
     <div>
-      <h1>Login with Google to add a comment</h1>
+      <h1>Sign in with Google to add a comment</h1>
       <button className="login-with-google-btn" onClick={ signInWithGoogle }>Sign in with Google</button>
-      <button onClick={signUserOut}>Log Out</button>
-      <Comments currentUserId='1' />
+      <button onClick={signUserOut}>Log Out</button> 
+      <Comments currentUserId={auth.currentUser.uid} />
     </div>
     
   );
