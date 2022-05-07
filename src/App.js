@@ -22,10 +22,12 @@ function App() {
 
 console.log(auth.currentUser);
   return (
-    <div>
-      <h1>Sign in with Google to add a comment</h1>
-      <button className="login-with-google-btn" onClick={ signInWithGoogle }>Sign in with Google</button>
-      <button onClick={signUserOut}>Log Out</button> 
+    <div className='container ml-2 mt-2'>
+      <p className='mb-2'>Sign in with Google to add a comment</p>
+      <div className='flex flex-col w-1/6'>
+        <button className="login-with-google-btn" onClick={ signInWithGoogle }>Sign in with Google</button>
+        {isAuth && <button className='bg-red-400 text-white mt-2 rounded w-1/3 mx-auto' onClick={signUserOut}>Sign Out</button>}
+      </div>
       <Comments currentUserId={auth.currentUser.uid} />
     </div>
     

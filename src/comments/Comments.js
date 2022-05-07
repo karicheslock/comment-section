@@ -58,14 +58,15 @@ function Comments({currentUserId}) {
     }, [commentsCollectionRef]);
 
   return (
-    <div className='comments'>
-        <h3 className='comments-title'>Comments</h3>
+    <div className='container flex flex-col w-1/2'>
+        <p className='text-xl mb-4 mt-4'>Comments</p>
+        <hr className='border-4 mb-4' />
         {isAuth && <>
-            <div className='comment-form-title'>Write comment</div>
-            <CommentForm submitLabel="Write" handleSubmit={addComment} />
+            <div className='text-sm'>Write your comment</div>
+            <CommentForm submitLabel="Post" handleSubmit={addComment} />
         </>
         }
-        <div className='comments-container'>
+        <div className=''>
             {rootComments.map((rootComment) => (
                 <Comment 
                     key={rootComment.id} 
