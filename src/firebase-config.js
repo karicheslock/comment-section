@@ -5,12 +5,12 @@ import { initializeFirestore, CACHE_SIZE_UNLIMITED } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDh6cKg5PfCnk7Fdri84uGqXLPCntLa7hU",
-  authDomain: "comment-section-64996.firebaseapp.com",
-  projectId: "comment-section-64996",
-  storageBucket: "comment-section-64996.appspot.com",
-  messagingSenderId: "1055863958040",
-  appId: "1:1055863958040:web:a1de59f1c8dea39c2b316d"
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID
 };
 
 // Initialize Firebase

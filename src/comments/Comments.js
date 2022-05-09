@@ -66,7 +66,7 @@ function Comments({currentUserId}) {
             <CommentForm submitLabel="Post" handleSubmit={addComment} />
         </>
         }
-        <div className=''>
+        <div>
             {rootComments.map((rootComment) => (
                 <Comment 
                     key={rootComment.id} 
