@@ -85,4 +85,4 @@ function Comments({currentUserId}) {
   )
 }
 
-export default Comments
+export default Comments;

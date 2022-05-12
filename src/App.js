@@ -21,14 +21,14 @@ function App() {
     });
   };
 
-  useEffect(() => {
+   useEffect(() => {
     if (isAuth) {
       setUserId(auth.currentUser.uid)
     }   
-  }, [isAuth]);
+  }, [isAuth]);  
 
- console.log(userId);
-  
+  //console.log(userId)
+
   return (
     <div className='container flex flex-col ml-2 mt-2 max-w-7xl justify-center items-center'>
       <p className='mb-2'>Sign in with Google to add a comment</p>

@@ -55,4 +55,4 @@ function Comment({comment, replies, currentUserId, deleteComment, activeComment,
   )
 }
 
-export default Comment
+export default Comment;
